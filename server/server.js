@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const port = process.env.port || 3000;
 
 // Now we will define that from where the server needs to take the files and run
 const path = require('path');
@@ -13,6 +14,6 @@ app.get('*', (req, res) => {
 
 // Now we will start the server
 // 1st argument port number 2nd argument callback function which calles when server is up.
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('Server is up');
 });
