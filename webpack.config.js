@@ -1,5 +1,12 @@
 
 const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== "production";
+const plugins = [
+  new MiniCssExtractPlugin({
+    linkType: true,
+  }),
+];
 
 module.exports = {
   entry: './src/app.js',
@@ -7,6 +14,7 @@ module.exports = {
     path: path.join(__dirname, 'public'),
     filename: 'bundle.js'
   },
+  plugins,
   module: {
     rules: [
       {
@@ -23,11 +31,23 @@ module.exports = {
       },
       {
         test: /\.s?css$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+        {
+          loader: "css-loader",
+          options: {
+            sourceMap: true
+          }
+        },
+        {
+          loader: "sass-loader",
+          options: {
+            sourceMap: true
+          }
+        }
+        ]
       }
     ]
   },
-  devtool: 'eval-cheap-module-source-map',
   devServer: {
     static: {
       directory: path.join(__dirname, 'public'),
@@ -39,6 +59,5 @@ module.exports = {
     hints: false,
     maxEntrypointSize: 512000,
     maxAssetSize: 512000
-  },
-  mode: 'development'
+  }
 }
