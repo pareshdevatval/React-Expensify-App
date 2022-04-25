@@ -11,7 +11,7 @@ const plugins = [
 module.exports = {
   entry: './src/app.js',
   output: {
-    path: path.join(__dirname, 'public'),
+    path: path.join(__dirname, 'public', "dist"),
     filename: 'bundle.js'
   },
   plugins,
@@ -31,7 +31,8 @@ module.exports = {
       },
       {
         test: /\.s?css$/,
-        use: [devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+        use: [
+        devMode ?  "style-loader" : MiniCssExtractPlugin.loader,       
         {
           loader: "css-loader",
           options: {
@@ -43,7 +44,7 @@ module.exports = {
           options: {
             sourceMap: true
           }
-        }
+        }        
         ]
       }
     ]
