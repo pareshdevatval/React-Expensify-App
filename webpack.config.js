@@ -32,7 +32,7 @@ module.exports = {
       {
         test: /\.s?css$/,
         use: [
-        devMode ?  "style-loader" : MiniCssExtractPlugin.loader,       
+        "style-loader",       
         {
           loader: "css-loader",
           options: {
