@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import ExpenseForm from "./ExpenseForm";
-import { addExpense } from "../actions/expenses";
+import { startAddExpense } from "../actions/expenses";
 import { useNavigate } from 'react-router-dom';
 
 function AddExpense(props) {
@@ -13,7 +13,7 @@ function AddExpense(props) {
             <ExpenseForm
                 onSubmit={(expense) => {
                     //props.dispatch(addExpense(expense));
-                    props.addExpense(expense);
+                    props.startAddExpense(expense);
                     navigate(-1);
                 }}
             />
@@ -24,7 +24,7 @@ function AddExpense(props) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addExpense: (expense) => dispatch(addExpense(expense))
+        startAddExpense: (expense) => dispatch(startAddExpense(expense))
     };
 };
 

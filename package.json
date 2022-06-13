@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-dev": "webpack --config webpack.dev.js",
-    "build-prod": "webpack --config webpack.prod.js",
-    "dev-server": "webpack-dev-server",
+    "build-dev": "webpack",
+    "build-prod": "webpack -p --env production",
+    "dev-server": "webpack-dev-server --mode=development",
     "build-babel": "babel src/app.js --out-file=public/scripts/app.js --presets=@babel/preset-env,@babel/preset-react --watch",
-    "test": "jest --config=jest.config.json",
+    "test": "cross-env NODE_ENV=test jest --config=jest.config.json",
     "start": "node server/server.js",
     "heroku-postbuild": "npm run build-prod"
   },
@@ -25,6 +25,7 @@
     "babel-loader": "^8.2.3",
     "connected-react-router": "^6.9.2",
     "css-loader": "^6.5.1",
+    "dotenv": "^16.0.1",
     "enzyme-to-json": "^3.6.2",
     "express": "^4.17.3",
     "firebase": "^9.7.0",
@@ -56,11 +57,13 @@
     "webpack-merge": "^5.8.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
     "react-test-renderer": "^16.0.0",
+    "redux-mock-store": "^1.5.4",
     "webpack-dev-server": "^4.6.0"
   }
 }
