@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import database from '../firebase/firebase';
-import { ref, push, get,onValue } from 'firebase/database';
+import { ref, push, get, onValue, set, update } from 'firebase/database';
 import expenses from '../tests/fixtures/expenses';
 
 // Add Expense
@@ -36,12 +36,33 @@ export const removeExpense = ({ id }) => ({
     id
 });
 
+export const startRemoveExpense = ({ id }) => {
+    return (dispatch) => {
+        return set(ref(database, `expenses/${id}`), null).then(() => {
+            dispatch(removeExpense(id));
+        });
+    }
+}
+
 //Edit Expense
 export const editExpense = (id, updates) => ({
     type: 'EDIT_EXPENSE',
     id,
     updates
 });
+
+export const startEditExpense = (id, updates) => {
+    return (dispatch) => {
+        return update(ref(database, `expenses/${id}`), { 
+            description: updates.description,
+            amount: updates.amount,
+            note: updates.note,
+            createdAt: updates.createdAt,
+         }).then(() => {
+            dispatch(editExpense(id, updates));
+        });
+    }
+};
 
 //SET_EXPENSES
 export const setExpenses = (expense) => ({
@@ -59,7 +80,7 @@ export const startSetExpenses = () => {
                     ...childSnapshot.val()
                 });
             });
-           
+
             dispatch(setExpenses(expenses));
         });
     };
