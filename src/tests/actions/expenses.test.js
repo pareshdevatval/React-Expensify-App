@@ -1,11 +1,19 @@
-import { startAddExpense, addExpense, removeExpense, editExpense } from '../../actions/expenses';
+import { startAddExpense, addExpense, removeExpense, editExpense, setExpenses, startSetExpenses } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import databse from '../../firebase/firebase';
-import { ref, onValue, get } from 'firebase/database';
+import { ref, onValue, get, set } from 'firebase/database';
 
 const createMockStore = configureMockStore([thunk]);
+
+beforeEach((done) => {
+    const expensesData = {};
+    expenses.forEach(({ id, note, description, createdAt, amount }) => {
+        expensesData[id] = { note, description, amount, createdAt };
+    });
+    set(ref(databse, 'expenses'), { expensesData }).then(() => done());
+});
 
 test('should setup remove expense action object', () => {
     const action = removeExpense({ id: '123abc' });
@@ -82,18 +90,22 @@ test('should add expense with default to the database', (done) => {
     });
 });
 
-
-// test('should setup add expence action object with default values', () => {
-
-//     const action = addExpense();
+// test('should setup set expense action object with data', () => {
+//     const action = setExpenses(expenses);
 //     expect(action).toEqual({
-//         type: 'ADD_EXPENSE',
-//         expense: {
-//             id: expect.any(String),
-//             description: '',
-//             note: '',
-//             amount: 0,
-//             createdAt: 0
-//         }
-//     })
+//         type: 'SET_EXPENSES',
+//         expenses
+//     });
+// });
+
+// test('should fetch expenses from firebase', (done) => {
+//     const store = createMockStore({});
+//     store.dispatch(startSetExpenses()).then(() => {
+//         const action = store.getActions();
+//         expect(action[0]).toEqual({
+//             type: 'SET_EXPENSES',
+//             expenses
+//         });
+//         done();
+//     });
 // });
