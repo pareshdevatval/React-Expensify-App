@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import expenseReducer from '../reducers/expenses';
 import filterReducer from '../reducers/filters';
+import authreducer from "../reducers/auth";
 import { createHashHistory } from "history";
 import thunk from 'redux-thunk';
 
@@ -28,7 +29,8 @@ export default () => {
     const store = createStore(
         connectRouter(history)(combineReducers({
             expenses: expenseReducer,
-            filters: filterReducer
+            filters: filterReducer,
+            auth: authreducer,
         })),
         initialState,
         composedEnhancers

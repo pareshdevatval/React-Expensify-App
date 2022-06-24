@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import database from '../firebase/firebase';
 import { ref, push, get, onValue, set, update } from 'firebase/database';
-import expenses from '../tests/fixtures/expenses';
 
 // Add Expense
 export const addExpense = (expense) => ({
@@ -11,7 +10,8 @@ export const addExpense = (expense) => ({
 
 export const startAddExpense = (expenseData = {}) => {
     // Redux thunk will allow to return function instade of object
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
         //Destructuring of data
         const {
             description = '',
@@ -21,7 +21,7 @@ export const startAddExpense = (expenseData = {}) => {
         } = expenseData;
 
         const expense = { description, note, amount, createdAt };
-        return push(ref(database, 'expenses'), expense).then((ref) => {
+        return push(ref(database, `users/${uid}/expenses`), expense).then((ref) => {
             dispatch(addExpense({
                 id: ref.key,
                 ...expense
@@ -37,8 +37,9 @@ export const removeExpense = ({ id }) => ({
 });
 
 export const startRemoveExpense = ({ id }) => {
-    return (dispatch) => {
-        return set(ref(database, `expenses/${id}`), null).then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        return set(ref(database, `users/${uid}/expenses/${id}`), null).then(() => {
             dispatch(removeExpense(id));
         });
     }
@@ -52,13 +53,14 @@ export const editExpense = (id, updates) => ({
 });
 
 export const startEditExpense = (id, updates) => {
-    return (dispatch) => {
-        return update(ref(database, `expenses/${id}`), { 
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        return update(ref(database, `users/${uid}/expenses/${id}`), {
             description: updates.description,
             amount: updates.amount,
             note: updates.note,
             createdAt: updates.createdAt,
-         }).then(() => {
+        }).then(() => {
             dispatch(editExpense(id, updates));
         });
     }
@@ -71,17 +73,18 @@ export const setExpenses = (expense) => ({
 });
 
 export const startSetExpenses = () => {
-    return (dispatch) => {
-        return get(ref(database, 'expenses')).then((snapshot) => {
-            const expenses = [];
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        return get(ref(database, `users/${uid}/expenses`)).then((snapshot) => {
+            const expense = [];
             snapshot.forEach((childSnapshot) => {
-                expenses.push({
+                expense.push({
                     id: childSnapshot.key,
                     ...childSnapshot.val()
                 });
             });
 
-            dispatch(setExpenses(expenses));
+            dispatch(setExpenses(expense));
         });
     };
 }; 
