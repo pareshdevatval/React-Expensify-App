@@ -10,6 +10,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import './firebase/firebase';
 import { startSetExpenses } from './actions/expenses';
 import { BrowserRouter as Router } from "react-router-dom";
+import LoadingPage from './components/LoadingPage';
 
 const store = configureStore();
 const jsx = (
@@ -28,10 +29,10 @@ const renderApp = () => {
     }
 };
 
-ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+ReactDOM.render(<LoadingPage/>, document.getElementById('app'));
 
 function select(state) {
-    return state.uid;
+    return state.auth.uid;
   }
 
 let currentValue;

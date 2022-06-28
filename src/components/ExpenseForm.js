@@ -6,14 +6,14 @@ import { parse } from "uuid";
 export default class ExpenseForm extends React.Component {
     constructor(props) {
         super(props);
-       
+
         this.state = {
             description: props.expense ? props.expense.description : '',
             note: props.expense ? props.expense.note : '',
             amount: props.expense ? (props.expense.amount / 100).toString() : '',
             createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
             focused: false,
-            buttonText: props.expense ? 'Submit' : 'Add Expense',
+            buttonText: props.expense ? 'Save Expense' : 'Add Expense',
             error: ''
         };
     }
@@ -62,17 +62,18 @@ export default class ExpenseForm extends React.Component {
     }
     render() {
         return (
-            <div>
-                {this.state.error && <p>{this.state.error}</p>}
-                <form onSubmit={this.onSubmit}>
+                <form className="form" onSubmit={this.onSubmit}>
+                    {this.state.error && <p className="form__error">{this.state.error}</p>}
                     <input
                         type="text"
+                        className="text-input"
                         placeholder="Description"
                         autoFocus
                         value={this.state.description}
                         onChange={this.onDescriptionChange} />
                     <input
                         type="text"
+                        className="text-input"
                         placeholder="Amount"
                         value={this.state.amount}
                         onChange={this.onAmountChange} />
@@ -84,14 +85,15 @@ export default class ExpenseForm extends React.Component {
                         numberOfMonths={1}
                         isOutsideRange={() => false} />
                     <textarea
+                        className="textarea"
                         placeholder="Add a note for your expence (Optional)"
                         value={this.state.note}
                         onChange={this.onNoteChange}>
                     </textarea>
-
-                    <button>{this.state.buttonText}</button>
+                    <div>
+                    <button className="box-button">{this.state.buttonText}</button>
+                    </div>
                 </form>
-            </div>
         );
     }
 }

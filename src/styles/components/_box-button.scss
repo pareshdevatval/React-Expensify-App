@@ -1,0 +1,20 @@
+.box-button{
+    background: $blue;
+    border: none;    
+    color: white;
+    display: inline-block; 
+    font-size: $font-size-large;    
+    font-weight: 300;
+    line-height: 1;
+    padding: $s-size;
+    text-decoration: none;
+}
+
+.box-button_gray{
+    @extend .box-button;
+    background: $light-gray;
+}
+
+.button--link{
+    background: none;
+}

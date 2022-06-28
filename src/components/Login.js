@@ -2,9 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { startLogin } from "../actions/auth";
 
-export const Login = ({startLogin}) => (
-    <div>
-        <button onClick={startLogin}>Login</button>
+export const Login = ({ startLogin }) => (
+    <div className="box-layout">
+        <div className="box-layout__box">
+            <h1 className="box-layout__title">Expensify</h1>
+            <p>It's time to get your expenses under control.</p>
+            <button className="box-button" onClick={startLogin}>Login with Google</button>
+        </div>
     </div>
 );
 
@@ -12,4 +16,4 @@ const mapDispatchToProp = (dispatch) => ({
     startLogin: () => dispatch(startLogin())
 });
 
-export default connect(undefined,mapDispatchToProp)(Login);
+export default connect(undefined, mapDispatchToProp)(Login);

@@ -22,11 +22,9 @@ const AppRouter = () => {
         onAuthStateChanged(getAuth(), (user) => {
             if (user) {
                 dispatch(login(user.uid));
-                history('/dashboard');
                 console.log('Log in');
             } else {
                 dispatch(logout());
-                history('/');
                 console.log('Log out');
             }
         });
